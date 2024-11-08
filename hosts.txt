@@ -1,8 +1,9 @@
 ## Ansible Hosts File for Cisco
 
 [ASAv]
-ASAv-1 ansible_host=192.168.1.245 
-
+C9300 ansible_host=192.168.99.53
+C3750A ansible_host=192.168.99.54
+C3750B ansible_host=192.168.99.55
 
 
 
