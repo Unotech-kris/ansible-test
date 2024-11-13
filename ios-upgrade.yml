@@ -3,6 +3,7 @@
 
 - name: Upgrade CISCO IOS 
   hosts: 192.168.99.53
+  
   vars: 
     upgrade_ios_version: 12.2(55)SE12
 
@@ -23,7 +24,7 @@
 
 ## Create backup folder for today 
 
-- hosts: localhost
+- hosts: 192.168.99.53
 
   tasks:
    - name: Get ansible date/time facts
@@ -43,7 +44,7 @@
 
 ## Backup Running Config 
 
-- hosts: SWITCHES 
+- hosts: 192.168.99.53 
 
   tasks:
    - name: Backup Running Config  
@@ -96,7 +97,7 @@
        host: "{{ inventory_hostname }}"
        port: 22
        delay: 90
-     delegate_to: localhost
+     delegate_to: 192.168.99.53
 
 ## Check current image 
 
