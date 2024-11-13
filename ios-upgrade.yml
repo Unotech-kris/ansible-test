@@ -2,7 +2,7 @@
 # Ansible Playbook to upgrade Cisco IOS 
 
 - name: Upgrade CISCO IOS 
-  hosts: localhost
+  hosts: 192.168.99.53
   vars: 
     upgrade_ios_version: 12.2(55)SE12
 
