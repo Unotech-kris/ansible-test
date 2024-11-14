@@ -3,10 +3,7 @@
 
 - name: Upgrade CISCO IOS 
   hosts: 192.168.99.53
-  ansible_connection: ansible.netcommon.network_cli
-  ansible_network_os: cisco.ios.ios
-  ansible_become: yes
-  ansible_become_method: enable
+
   
   vars: 
     upgrade_ios_version: 17.13.01
