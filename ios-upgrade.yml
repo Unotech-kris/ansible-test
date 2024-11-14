@@ -32,6 +32,7 @@
         dest: "flash:/cat9k_iosxe.17.12.04.SPA.bin"
       vars: 
         ansible_command_timeout: 600
+        ansible_network_cli_ssh_type: paramiko
 
 ## Change the Boot Variable to the new image 
 
