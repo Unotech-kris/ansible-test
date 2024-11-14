@@ -11,6 +11,7 @@
   tasks:
     - name: CHECK CURRENT VERSION
       command: "ls /IOS"
+      delegate_to: localhost
       register: output
     - name: print
       debug:
