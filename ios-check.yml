@@ -1,0 +1,17 @@
+---
+# Ansible Playbook to upgrade Cisco IOS 
+
+- name: Upgrade CISCO IOS 
+  hosts: 192.168.99.53
+
+  
+  vars: 
+    upgrade_ios_version: 17.13.01
+
+  tasks:
+    - name: CHECK CURRENT VERSION
+      command: "ls /IOS"
+      register: output
+    - name: print
+      debug:
+        var: output.stdout
