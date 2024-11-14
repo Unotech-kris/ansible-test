@@ -37,7 +37,7 @@
 	- name: Change Boot Variable to new image 
       ios_config: 
         commands: 
-          - "boot system flash:cat9k_iosxe.17.12.04.SPA.bin"
+        - "boot system flash:cat9k_iosxe.17.12.04.SPA.bin"
         save_when: always 
 
 ## Reload the device 
@@ -46,9 +46,9 @@
       cli_command: 
         command: reload
         prompt: 
-          - confirm
+        - confirm
         answer: 
-          - 'y'
+        - 'y'
          
 ## Wait for Reachability to the device 
 
@@ -79,3 +79,5 @@
     - debug: 
         msg: 
         - "Software Upgrade has been completed"
+
+
