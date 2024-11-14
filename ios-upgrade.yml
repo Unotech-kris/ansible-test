@@ -34,7 +34,7 @@
 
 ## Change the Boot Variable to the new image 
 
-	- name: Change Boot Variable to new image 
+    - name: Change Boot Variable to new image 
       ios_config: 
         commands: 
         - "boot system flash:cat9k_iosxe.17.12.04.SPA.bin"
