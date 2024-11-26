@@ -14,7 +14,7 @@
     - name: UPGRADE IOS IMAGE IF NOT COMPLIANT
       block:
       - name: COPY OVER IOS IMAGE
-        command: "scp cat9k_iosxe.17.12.04.SPA.bin {{inventory_hostname}}:/cat9k_iosxe.17.12.04.SPA.bin"
+        command: "scp /IOS/cat9k_iosxe.17.12.04.SPA.bin {{inventory_hostname}}:/cat9k_iosxe.17.12.04.SPA.bin"
 
       - name: SET BOOT SYSTEM FLASH
         ios_config:
