@@ -27,12 +27,12 @@
 ## Copy software to target device 
 
     - name: Copy Image // This could take up to 4 minutes
-      ansible.netcommon.net_put:
+      net_put:
         src: "/IOS/cat9k_iosxe.17.12.04.SPA.bin"
+        protocol: scp
         dest: "flash:/cat9k_iosxe.17.12.04.SPA.bin"
       vars: 
         ansible_command_timeout: 600
-        ansible_network_cli_ssh_type: paramiko
 
 ## Change the Boot Variable to the new image 
 
