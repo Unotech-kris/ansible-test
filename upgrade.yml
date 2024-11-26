@@ -1,10 +1,11 @@
+---
 - name: UPGRADE ROUTER FIRMWARE
-  hosts: routers
+  hosts: 192.168.99.53
   connection: network_cli
   gather_facts: no
 
   vars:
-    compliant_ios_version: 16.08.01a
+    compliant_ios_version: 17.12.04
 
   tasks:
     - name: GATHER ROUTER FACTS
