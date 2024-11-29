@@ -7,5 +7,6 @@
         msg: "Copying file to switch"
     - name: Copy file
       copy:
-        src: /path/to/local/file
-        dest: /path/on/switch/file
+        src: /IOS/cat9k_iosxe.17.12.04.SPA.bin
+        dest: flash:/cat9k_iosxe.17.12.04.SPA.bin
+
