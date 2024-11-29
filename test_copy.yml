@@ -8,5 +8,5 @@
     - name: Copy file
       copy:
         src: /IOS/cat9k_iosxe.17.12.04.SPA.bin
-        dest: flash:/cat9k_iosxe.17.12.04.SPA.bin
+        dest: /flash:/cat9k_iosxe.17.12.04.SPA.bin
 
