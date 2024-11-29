@@ -1,0 +1,11 @@
+---
+- name: Copy file to switch
+  hosts: 192.168.99.53
+  tasks:
+    - name: Debug
+      debug:
+        msg: "Copying file to switch"
+    - name: Copy file
+      copy:
+        src: /path/to/local/file
+        dest: /path/on/switch/file
