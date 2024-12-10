@@ -6,7 +6,7 @@
 
   
   vars: 
-    upgrade_ios_version: 17.12.04
+    upgrade_ios_version: 17.13.01
 
   tasks:
     - name: CHECK CURRENT VERSION
