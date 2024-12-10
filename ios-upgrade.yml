@@ -4,7 +4,6 @@
 - name: Upgrade CISCO IOS 
   hosts: 192.168.99.53
 
-  
   vars: 
     upgrade_ios_version: 17.13.01
 
@@ -26,20 +25,20 @@
 
 ## Copy software to target device 
 
-    - name: Copy Image // This could take up to 4 minutes
+    - name: Copy Image // This could take up to 10 minutes
       net_put:
         src: "/IOS/cat9k_iosxe.17.13.01.SPA.bin"
         protocol: scp
         dest: "flash:/cat9k_iosxe.17.13.01.SPA.bin"
       vars: 
-        ansible_command_timeout: 900
+        ansible_command_timeout: 600
 
 ## Change the Boot Variable to the new image 
 
     - name: Change Boot Variable to new image 
       ios_config: 
         commands: 
-        - "boot system flash:/cat9k_iosxe.17.13.01.SPA.bin"
+        - "boot system flash:cat9k_iosxe.17.13.01.SPA.bin"
         save_when: always 
 
 ## Reload the device 
@@ -72,7 +71,7 @@
         - "Current version is {{ ansible_net_version }}"
 
     - name: ASSERT THAT THE IOS VERSION IS CORRECT
-   
+
       vars: 
         upgrade_ios_version: 17.13.01
 
