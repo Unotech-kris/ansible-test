@@ -6,7 +6,7 @@
 
   
   vars: 
-    upgrade_ios_version: 17.13.01
+    upgrade_ios_version: 17.12.04
 
   tasks:
     - name: CHECK CURRENT VERSION
@@ -15,7 +15,7 @@
     - debug: 
         msg: 
         - "Current version is {{ ansible_net_version }}"
-        - "Upgrade image is 17.12.04"
+        - "Upgrade image is 17.13.01"
 
     - debug: 
         msg: 
@@ -28,18 +28,18 @@
 
     - name: Copy Image // This could take up to 4 minutes
       net_put:
-        src: "/IOS/cat9k_iosxe.17.12.04.SPA.bin"
+        src: "/IOS/cat9k_iosxe.17.13.01.SPA.bin"
         protocol: scp
-        dest: "flash:/cat9k_iosxe.17.12.04.SPA.bin"
+        dest: "flash:/cat9k_iosxe.17.13.01.SPA.bin"
       vars: 
-        ansible_command_timeout: 600
+        ansible_command_timeout: 900
 
 ## Change the Boot Variable to the new image 
 
     - name: Change Boot Variable to new image 
       ios_config: 
         commands: 
-        - "boot system flash:cat9k_iosxe.17.12.04.SPA.bin"
+        - "boot system flash:cat9k_iosxe.17.13.01.SPA.bin"
         save_when: always 
 
 ## Reload the device 
@@ -74,7 +74,7 @@
     - name: ASSERT THAT THE IOS VERSION IS CORRECT
    
       vars: 
-        upgrade_ios_version: 17.12.04
+        upgrade_ios_version: 17.13.01
 
       assert:
         that:
