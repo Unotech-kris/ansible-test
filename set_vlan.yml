@@ -1,7 +1,10 @@
 ---
 # Ansible Playbook to set vlan to CISCO switches 
-
-- name: Merge provided configuration with device configuration
+tasks:
+ - name: Include Vars
+   include_vars: hosts.yml
+    
+ - name: Merge provided configuration with device configuration
   cisco.ios.ios_vlans:
     config:
       - name: Vlan_101
