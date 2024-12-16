@@ -1,6 +1,6 @@
 ---
 - name: Configure VLANs on Cisco Switches
-  hosts: switches
+  hosts: [SWITCHES_C9300]
   gather_facts: no
   tasks:
     - name: Include Vars
