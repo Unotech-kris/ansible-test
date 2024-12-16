@@ -1,25 +1,26 @@
 ---
-# Ansible Playbook to set vlan to CISCO switches
+- name: Configure VLANs on Cisco Switches
+  hosts: switches
+  gather_facts: no
+  tasks:
+    - name: Include Vars
+      include_vars: hosts.yml
 
-tasks:
- - name: Include Vars
-   include_vars: hosts.yml
-    
- - name: Merge provided configuration with device configuration
-  cisco.ios.ios_vlans:
-    config:
-      - name: Vlan_101
-        vlan_id: 100
-        state: active
-        shutdown: disabled
-        remote_span: true
-      - name: Vlan_200
-        vlan_id: 200
-        mtu: 610
-        state: active
-        shutdown: enabled
-      - name: Vlan_300
-        vlan_id: 300
-        state: suspend
-        shutdown: enabled
-    state: merged
+    - name: Merge provided configuration with device configuration
+      cisco.ios.ios_vlans:
+        config:
+          - name: Vlan_101
+            vlan_id: 100
+            state: active
+            shutdown: false
+            remote_span: true
+          - name: Vlan_200
+            vlan_id: 200
+            mtu: 610
+            state: active
+            shutdown: true
+          - name: Vlan_300
+            vlan_id: 300
+            state: suspended
+            shutdown: true
+        state: merged
