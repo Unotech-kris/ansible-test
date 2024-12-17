@@ -3,9 +3,9 @@
   hosts: 192.168.99.53
   gather_facts: no
   tasks:
-  - name: Merge provided configuration with device configuration
-    cisco.ios.ios_vlans:
-     config:
+   - name: Merge provided configuration with device configuration
+     cisco.ios.ios_vlans:
+      config:
       - name: Vlan_10
         vlan_id: 10
         state: active
@@ -20,7 +20,7 @@
         vlan_id: 30
         state: suspend
         shutdown: enabled
-    state: merged
+     state: merged
      
   - name: SHOW VLAN BRIEF
     command: "show vlan brief"
