@@ -23,6 +23,7 @@
       state: overridden
      
    - name: SHOW VLAN BRIEF
+     cisco.ios.ios_command:
      command: "show vlan brief"
      register: output
     
