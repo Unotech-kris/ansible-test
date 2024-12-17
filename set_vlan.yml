@@ -21,7 +21,8 @@
          state: suspend
          shutdown: enabled
      state: merged
-   - name: show vlan brief
+     
+  - name: show vlan brief
      ios_command:
       commands:show vlan brief
      register: vlan_brief
