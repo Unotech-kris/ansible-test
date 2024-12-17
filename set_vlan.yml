@@ -2,6 +2,7 @@
 - name: Configure VLANs on Cisco Switches
   hosts: 192.168.99.53
   gather_facts: no
+  
   tasks:
   - name: Merge provided configuration with device configuration
     cisco.ios.ios_vlans:
