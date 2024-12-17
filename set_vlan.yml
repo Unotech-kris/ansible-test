@@ -20,7 +20,7 @@
          vlan_id: 30
          state: suspend
          shutdown: enabled
-      state: merged
+      state: overridden
      
    - name: SHOW VLAN BRIEF
      command: "show vlan brief"
