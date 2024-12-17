@@ -24,7 +24,6 @@
      
    - name: SHOW VLAN BRIEF
      command: "show vlan brief"
-     delegate_to: localhost
      register: output
     
    - name: print
