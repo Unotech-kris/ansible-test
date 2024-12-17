@@ -22,12 +22,11 @@
          shutdown: enabled
      state: merged
      
-  - name: show vlan brief
-    ios_command:
-     commands:show vlan brief
-    
-    register: vlan_brief
-
-  - name: Print output to screen
-    debug:
-     var=vlan_brief.stdout_lines
+  tasks:
+    - name: SHOW VLAN BRIEF
+      command: "show vlan brief"
+      delegate_to: localhost
+      register: output
+    - name: print
+      debug:
+        var: output.stdout
