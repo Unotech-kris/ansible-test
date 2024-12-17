@@ -22,8 +22,9 @@
       state: merged
      
    - name: SHOW VLAN BRIEF
-     command: "show vlan brief"
-     delegate_to: localhost
+     cisco.ios.ios_command:
+       commands:
+         - "show vlan brief"
      register: output
     
    - name: Print VLAN Brief Output
