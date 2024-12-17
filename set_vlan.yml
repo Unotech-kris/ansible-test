@@ -1,34 +1,34 @@
 ---
-- name: Configure VLANs on Cisco Switches
-  hosts: 192.168.99.53
-  gather_facts: no
+ - name: Configure VLANs on Cisco Switches
+   hosts: 192.168.99.53
+   gather_facts: no
   
-  tasks:
-  - name: Merge provided configuration with device configuration
-    cisco.ios.ios_vlans:
-     config:
-       - name: Vlan_10
-         vlan_id: 10
-         state: active
-         shutdown: disabled
-         remote_span: true
-       - name: Vlan_20
-         vlan_id: 20
-         mtu: 610
-         state: active
-         shutdown: enabled
-       - name: Vlan_30
-         vlan_id: 30
-         state: suspend
-         shutdown: enabled
-     state: merged
+   tasks:
+   - name: Merge provided configuration with device configuration
+     cisco.ios.ios_vlans:
+      config:
+        - name: Vlan_10
+          vlan_id: 10
+          state: active
+          shutdown: disabled
+          remote_span: true
+        - name: Vlan_20
+          vlan_id: 20
+          mtu: 610
+          state: active
+          shutdown: enabled
+        - name: Vlan_30
+          vlan_id: 30
+          state: suspend
+          shutdown: enabled
+      state: merged
      
-  - name: show vlan brief
-    ios_command:
-     commands:show vlan brief
-    register: vlan_brief
+   - name: show vlan brief
+     ios_command:
+      commands:show vlan brief
+     register: vlan_brief
     
-  - name: Print output to screen
-    debug:
-    var=vlan_brief.stdout_lines
+   - name: Print output to screen
+     debug:
+     var=vlan_brief.stdout_lines
     
