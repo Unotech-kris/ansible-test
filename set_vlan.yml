@@ -24,8 +24,8 @@
      
    - name: SHOW VLAN BRIEF
      cisco.ios.ios_command:
-     command: "show vlan brief"
-     register: output
+      commands: "show vlan brief"
+      register: output
     
    - name: print
      debug:
