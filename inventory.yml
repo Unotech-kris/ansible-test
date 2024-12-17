@@ -2,3 +2,8 @@
 eos
 ios
 vyos
+
+[switch]
+C9300 ansible_host=192.168.99.53
+C3750B ansible_host=192.168.99.55
+
