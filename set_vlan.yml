@@ -23,11 +23,12 @@
      state: merged
      
   - name: show vlan brief
-     ios_command:
-      commands:show vlan brief
-     register: vlan_brief
+    ios_command:
+     commands:show vlan brief
+    
+    register: vlan_brief
 
-   - name: Print output to screen
+  - name: Print output to screen
      debug:
      var=vlan_brief.stdout_lines
     
