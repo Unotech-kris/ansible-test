@@ -28,5 +28,5 @@
     delegate_to: localhost
     register: output
   - name: print
-     debug:
-      var: output.stdout
+    debug:
+    var: output.stdout
