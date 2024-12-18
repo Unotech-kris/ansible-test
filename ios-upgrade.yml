@@ -21,21 +21,21 @@
       when: ansible_net_version != upgrade_ios_version
 
 ## Create backup folder for today 
+- hosts: localhost
+  - name: Get ansible date/time facts
+    setup:
+      filter: "ansible_date_time"
+      gather_subset: "!all"
 
-    - name: Get ansible date/time facts
-      setup:
-        filter: "ansible_date_time"
-        gather_subset: "!all"
+  - name: Store DTG as fact
+    set_fact:
+      DTG: "{{ ansible_date_time.date }}"
 
-    - name: Store DTG as fact
-      set_fact:
-        DTG: "{{ ansible_date_time.date }}"
-
-    - name: Create Directory {{ DTG }}
-      file:
-       path: ~/IOS/backups/{{ DTG }}
-       state: directory
-      run_once: true
+  - name: Create Directory {{ DTG }}
+     file:
+      path: ~/IOS/backups/{{ DTG }}
+      state: directory
+     run_once: true
 
 ## Backup Running Config 
 
