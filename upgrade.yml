@@ -23,8 +23,8 @@
       when: ansible_net_version != upgrade_ios_version
 
       
-   - name: Check validity of IOS Image [ FAIL Out if first 10 characters of new_image != current_image ]
-     assert:
-      that: upgrade_ios_version[:8] in ansible_net_version
-      fail_msg: "FAIL- New OS Image invalid for device"
-      success_msg: "PASS - New OS Image confirmed valid for device"
+    - name: Check validity of IOS Image [ FAIL Out if first 10 characters of new_image != current_image ]
+      assert:
+       that: upgrade_ios_version[:8] in ansible_net_version
+       fail_msg: "FAIL- New OS Image invalid for device"
+       success_msg: "PASS - New OS Image confirmed valid for device"
