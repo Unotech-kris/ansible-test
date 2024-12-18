@@ -1,44 +1,51 @@
 ---
-- name: UPGRADE ROUTER FIRMWARE
-  hosts: 192.168.99.53
-  connection: network_cli
-  gather_facts: no
+- name: Gather facts from the device
+  ios_facts:
+    gather_subset: all
 
+- debug:
+    msg: "CURRENT IOS IMAGE = {{ ansible_net_image }}"
+
+- name: Check validity of IOS Image [ FAIL Out if first 10 characters of new_image != current_image ]
+  assert:
+    that: new_image[:10] in ansible_net_image
+    fail_msg: "FAIL- New OS Image invalid for device"
+    success_msg: "PASS - New OS Image confirmed valid for device"
+
+- name: Check new_image == oldOS [FAIL Out Device if new_image is already in use]
+  assert:
+    that: new_image not in ansible_net_image
+    fail_msg: "new_image == current_image. Stopping checks on the device"
+    success_msg: "new_image != current_image. Checks to continue"
+
+- name: Set variables for device file systems.
+  set_fact:
+    free_space: ansible_net_filesystems_info[ansible_net_filesystems[0]]["spacefree_kb"]
+    file_destination: "{{ ansible_net_filesystems[0] + new_image }}"
+
+- debug:
+    msg: "AVAILABLE FREE MEMORY SPACE = {{ free_space }}"
+
+- name: Confirm device has enough free memory space before transfer
+  assert:
+    that: "{{ free_space }} > {{ file_size|float * 0.001 }}"  # convert to kbps
+    fail_msg: "FAIL - Not enough space available for upload"
+    success_msg: "PASS - Enough space available for upload"
+
+- name: Activate CI SCP Server feature # Ensure device has the scp feature activated.
+  ios_config:
+    commands: ip scp server enable
+
+- debug:
+    msg: "UPLOAD DESTINATION = {{ file_destination }}"
+
+- name: Upload Image to device
+  net_put:
+    src: "images/{{ new_image }}"   #  Local directory that contains the image file.
+    dest: "{{ file_destination }}"
   vars:
-    compliant_ios_version: 17.12.04
+    ansible_command_timeout: 7200  # Increase upload time
 
-  tasks:
-    - name: GATHER ROUTER FACTS
-      ios_facts:
-
-    - name: UPGRADE IOS IMAGE IF NOT COMPLIANT
-      block:
-      - name: COPY OVER IOS IMAGE
-        command: "scp /IOS/cat9k_iosxe.17.12.04.SPA.bin {{inventory_hostname}}:/cat9k_iosxe.17.12.04.SPA.bin"
-
-      - name: SET BOOT SYSTEM FLASH
-        ios_config:
-          commands:
-            - "boot system flash:cat9k_iosxe.17.12.04.SPA.bin"
-
-      - name: REBOOT ROUTER
-        ios_command:
-          commands:
-            - "reload\n"
-
-      - name: WAIT FOR ROUTER TO RETURN
-        wait_for:
-          host: "{{inventory_hostname}}"
-          port: 22
-          delay: 60
-        delegate_to: localhost
-
-      when: ansible_net_version != compliant_ios_version
-
-    - name: GATHER ROUTER FACTS FOR VERIFICATION
-      ios_facts:
-
-    - name: ASSERT THAT THE IOS VERSION IS CORRECT
-      assert:
-        that:
-          - compliant_ios_version == ansible_net_version
+- debug:
+    msg: "UPLOAD CONFIRMATION-New ios image uploaded successfully."
+...
