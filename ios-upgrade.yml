@@ -77,9 +77,12 @@
      when: flash_output.stdout | length > 0  # Ensure there is output before checking
 
    - name: Run specific command if file does not exist
-     ios_command:
-       commands:
-        - Show vlan  # Replace with the command you want to run
+     net_put:
+       src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+       protocol: scp
+       dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+     vars: 
+       ansible_command_timeout: 600
      when: not file_exists | default(false)  # Handle the case where file_exists is not defined
 
 ## Change the Boot Variable to the new image 
@@ -87,7 +90,7 @@
    - name: Change Boot Variable to new image 
      ios_config: 
        commands: 
-       - "boot system flash:cat9k_iosxe.17.13.01.SPA.bin"
+       - "boot system flash:cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
        save_when: always 
 
 ## Reload the device 
@@ -121,7 +124,7 @@
 
    - name: ASSERT THAT THE IOS VERSION IS CORRECT
      vars: 
-       upgrade_ios_version: 17.13.01
+       upgrade_ios_version: {{ upgrade_ios_version }}
      assert:
        that:
        - upgrade_ios_version == ansible_net_version
