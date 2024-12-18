@@ -79,17 +79,8 @@
    - name: Run specific command if file does not exist
      ios_command:
        commands:
-        - your_specific_command  # Replace with the command you want to run
+        - Show vlan  # Replace with the command you want to run
      when: not file_exists | default(false)  # Handle the case where file_exists is not defined
-      
-   - name: Copy Image if no file exist // This could take up to 10 minutes
-     net_put:
-       src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
-       protocol: scp
-       dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
-     vars: 
-       ansible_command_timeout: 600
-     when: not file_exists
 
 ## Change the Boot Variable to the new image 
 
