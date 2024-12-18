@@ -64,7 +64,7 @@
    - name: Check for file in flash
      ios_command:
        commands:
-         - dir flash:
+         - "dir flash:"
      register: flash_output
 
    - name: Set fact if file exists
