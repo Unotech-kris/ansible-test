@@ -31,9 +31,9 @@
       set_fact:
         DTG: "{{ ansible_date_time.date }}"
 
-    - name: Create Directory {{hosts.DTG}}
+    - name: Create Directory {{hosts}}.{{DTG}}
       file:
-       path: ~/IOS/backups/{{hosts.DTG}}
+       path: ~/IOS/backups/{{hosts}}.{{DTG}}
        state: directory
       run_once: true
 
