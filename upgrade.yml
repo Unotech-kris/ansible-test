@@ -1,9 +1,10 @@
 ---
-- hosts: localhost
+- name: Gather Facts Example
+  hosts: all
   tasks:
    - name: Gather facts from the device
-      ios_facts:
-       gather_subset: all
+       ios_facts:
+        gather_subset: all
 
    - debug:
       msg: "CURRENT IOS IMAGE = {{ ansible_net_image }}"
