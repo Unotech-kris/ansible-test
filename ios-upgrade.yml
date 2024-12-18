@@ -66,10 +66,21 @@
        commands:
          - "dir flash:"
      register: flash_output
-
-   - name: Set fact if file exists
+     
+   - name: Debug flash output
+     debug:
+      var: flash_output
+        
+   - name: Set fact if specific file exists
      set_fact:
-       file_exists: "{{ 'cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin' in flash_output.stdout[0] }}"  # Replace 'your_file_name' with actual file name
+      file_exists: "{{ cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin in flash_output.stdout[0] }}"  # Replace 'your_file_name' with actual file name
+     when: flash_output.stdout | length > 0  # Ensure there is output before checking
+
+   - name: Run specific command if file does not exist
+     ios_command:
+       commands:
+        - your_specific_command  # Replace with the command you want to run
+     when: not file_exists | default(false)  # Handle the case where file_exists is not defined
       
    - name: Copy Image if no file exist // This could take up to 10 minutes
      net_put:
