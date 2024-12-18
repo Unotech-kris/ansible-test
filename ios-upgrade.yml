@@ -61,13 +61,24 @@
 
 ## Copy software to target device 
 
-   - name: Copy Image // This could take up to 10 minutes
+   - name: Check for file in flash
+     ios_command:
+       commands:
+         - dir flash:
+     register: flash_output
+
+   - name: Set fact if file exists
+     set_fact:
+       file_exists: "{{ 'cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin' in flash_output.stdout[0] }}"  # Replace 'your_file_name' with actual file name
+      
+   - name: Copy Image if no file exist // This could take up to 10 minutes
      net_put:
-       src: "/IOS/cat9k_iosxe.17.13.01.SPA.bin"
+       src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
        protocol: scp
-       dest: "flash:/cat9k_iosxe.17.13.01.SPA.bin"
+       dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
      vars: 
        ansible_command_timeout: 600
+     when: not file_exists
 
 ## Change the Boot Variable to the new image 
 
