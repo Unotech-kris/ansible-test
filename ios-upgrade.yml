@@ -35,7 +35,7 @@
       file:
        path: ~/IOS/backups/{{hostvars.localhost.DTG}}
        state: directory
-    run_once: true
+      run_once: true
 
 ## Backup Running Config 
 
