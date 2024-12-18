@@ -1,17 +1,30 @@
 ---
-- name: Gather Facts Example
-  hosts: all
+# Ansible Playbook to upgrade Cisco IOS 
+
+- name: Upgrade CISCO IOS 
+  hosts: 192.168.99.53
+
+  vars: 
+    upgrade_ios_version: 17.13.01
+
   tasks:
-   - name: Print gathered facts
-     debug:
-       var: ansible_facts
-       
-   - name: Check current operating system
-     debug:
-      msg: "CURRENT IOS IMAGE = {{ ansible_net_image }}"
+    - name: CHECK CURRENT VERSION
+      ios_facts:
+
+    - debug: 
+        msg: 
+        - "Current version is {{ ansible_net_version }}"
+        - "Upgrade image is 17.13.01"
+
+    - debug: 
+        msg: 
+        - "Image is not compliant and will be upgraded"
+
+      when: ansible_net_version != upgrade_ios_version
+
       
    - name: Check validity of IOS Image [ FAIL Out if first 10 characters of new_image != current_image ]
      assert:
-      that: new_image[:10] in ansible_net_image
+      that: upgrade_ios_version[:8] in ansible_net_version
       fail_msg: "FAIL- New OS Image invalid for device"
       success_msg: "PASS - New OS Image confirmed valid for device"
