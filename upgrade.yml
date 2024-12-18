@@ -5,5 +5,7 @@
    - name: Print gathered facts
      debug:
        var: ansible_facts
-   - debug:
+       
+   - name: Check current operating system
+     debug:
       msg: "CURRENT IOS IMAGE = {{ ansible_net_image }}"
