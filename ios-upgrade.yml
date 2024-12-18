@@ -18,8 +18,42 @@
     - debug: 
         msg: 
         - "Image is not compliant and will be upgraded"
-
       when: ansible_net_version != upgrade_ios_version
+
+## Create backup folder for today 
+
+    - name: Get ansible date/time facts
+      setup:
+        filter: "ansible_date_time"
+        gather_subset: "!all"
+
+    - name: Store DTG as fact
+      set_fact:
+        DTG: "{{ ansible_date_time.date }}"
+
+    - name: Create Directory {{hostvars.localhost.DTG}}
+      file:
+       path: ~/IOS/backups/{{hostvars.localhost.DTG}}
+       state: directory
+    run_once: true
+
+## Backup Running Config 
+
+    - name: Backup Running Config  
+      ios_command:
+        commands: show run  
+      register: config
+
+    - name: Save output to ~/IOS/backups/
+      copy:
+        content: "{{config.stdout[0]}}"
+        dest: "~/IOS/backups/{{hostvars.localhost.DTG}}/{{ inventory_hostname }}-{{hostvars.localhost.DTG}}-config.txt"
+
+## SAVE the Running Config 
+
+    - name: Save running config 
+      ios_config:
+        save_when: always 
 
 ## Copy software to target device 
 
@@ -79,5 +113,3 @@
     - debug: 
         msg: 
         - "Software Upgrade has been completed"
-
-
