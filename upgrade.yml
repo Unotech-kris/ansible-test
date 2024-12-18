@@ -9,3 +9,9 @@
    - name: Check current operating system
      debug:
       msg: "CURRENT IOS IMAGE = {{ ansible_net_image }}"
+      
+   - name: Check validity of IOS Image [ FAIL Out if first 10 characters of new_image != current_image ]
+     assert:
+      that: new_image[:10] in ansible_net_image
+      fail_msg: "FAIL- New OS Image invalid for device"
+      success_msg: "PASS - New OS Image confirmed valid for device"
