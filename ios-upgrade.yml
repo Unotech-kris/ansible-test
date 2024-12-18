@@ -81,8 +81,8 @@
        src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
        protocol: scp
        dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
-     vars: 
-       ansible_command_timeout: 600
+       vars: 
+        ansible_command_timeout: 600
      when: not file_exists | default(false)  # Handle the case where file_exists is not defined
 
 ## Change the Boot Variable to the new image 
@@ -123,8 +123,6 @@
        - "Current version is {{ ansible_net_version }}"
 
    - name: ASSERT THAT THE IOS VERSION IS CORRECT
-##     vars: 
-##       upgrade_ios_version: {{ upgrade_ios_version }}
      assert:
        that:
        - upgrade_ios_version == ansible_net_version
