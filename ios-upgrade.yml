@@ -122,7 +122,7 @@
        msg: 
        - "Current version is {{ ansible_net_version }}"
 
-##   - name: ASSERT THAT THE IOS VERSION IS CORRECT
+   - name: ASSERT THAT THE IOS VERSION IS CORRECT
 ##     vars: 
 ##       upgrade_ios_version: {{ upgrade_ios_version }}
      assert:
