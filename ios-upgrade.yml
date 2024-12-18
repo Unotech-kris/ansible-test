@@ -78,9 +78,9 @@
 
    - name: Run specific command if file does not exist
      net_put:
-      src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+      src: "/IOS/'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin'"
       protocol: scp
-      dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+      dest: "flash:/'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin'"
       timeout: 600
      when: not file_exists | default(false)  # Handle the case where file_exists is not defined
 
@@ -89,7 +89,7 @@
    - name: Change Boot Variable to new image 
      ios_config: 
        commands: 
-       - "boot system flash:cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+       - "boot system flash:'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin'"
        save_when: always 
 
 ## Reload the device 
