@@ -35,7 +35,7 @@
  
    - name: Create Directory 
      file:
-      path: ~/IOS/backups/{{DTG}}
+      path: ~/IOS/backups/{{ DTG }}
       state: directory
   run_once: true
 
@@ -51,7 +51,7 @@
    - name: Save output to ~/IOS/backups/
      copy:
        content: "{{config.stdout[0]}}"
-       dest: "~/IOS/backups/{{DTG}}/{{ inventory_hostname }}-{{hostvars.localhost.DTG}}-config.txt"
+       dest: "~/IOS/backups/{{ DTG }}/{{ inventory_hostname }}-{{ DTG }}-config.txt"
 
 ## SAVE the Running Config 
 
