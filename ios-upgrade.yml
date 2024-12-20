@@ -47,7 +47,8 @@
       wait_for:
         host: "{{ inventory_hostname }}"
         port: 22
-        delay: 90
+        delay: 600
+        timeout: 600
       delegate_to: localhost
 
 ## Check current image 
