@@ -3,7 +3,7 @@
 - name: Upgrade CISCO IOS 
   hosts: 192.168.99.53
   vars: 
-    upgrade_ios_version: "17.13.01"
+    upgrade_ios_version: 17.13.01
 
   tasks:
     - name: CHECK CURRENT VERSION
