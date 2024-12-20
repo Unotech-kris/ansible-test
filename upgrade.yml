@@ -1,35 +1,88 @@
 ---
-# Ansible Playbook to upgrade Cisco IOS 
-
+# Ansible Playbook to Upgrade Cisco IOS 
 - name: Upgrade CISCO IOS 
   hosts: 192.168.99.53
   vars: 
     upgrade_ios_version: 17.13.01
 
   tasks:
-    - name: CHECK CURRENT VERSION
-      ios_facts:
+    - block:
+        - name: CHECK CURRENT VERSION
+          ios_facts:
 
-    - debug: 
-        msg: 
-        - "Current version is {{ ansible_net_version }}"
-        - "Upgrade image is {{ upgrade_ios_version }}"
+        - name: Debug current and upgrade version
+          debug: 
+            msg: 
+              - "Current version is {{ ansible_net_version }}"
+              - "Upgrade image is {{ upgrade_ios_version }}"
 
-    - debug: 
-        msg: 
-        - "Image is not compliant and will be upgraded"
-      when: ansible_net_version != upgrade_ios_version
+        - name: Check if upgrade is needed
+          debug: 
+            msg: "Image is not compliant and will be upgraded"
+          when: ansible_net_version != upgrade_ios_version
 
+        - name: Copy ios file to host
+          net_put:
+            src: "/IOS/cat9k_iosxe.17.13.01.SPA.bin"
+            dest: "flash:/cat9k_iosxe.17.13.01.SPA.bin"
+          vars: 
+            ansible_command_timeout: 900
+
+        - name: Change Boot Variable to new image 
+          ios_config: 
+            commands: 
+              - "boot system flash:cat9k_iosxe.17.13.01.SPA.bin"
+            save_when: always 
+
+        - name: Reload the Device 
+          cli_command: 
+            command: reload
+            prompt: 
+              - confirm
+            answer: 
+              - 'y'
+
+        - name: Wait for device to come back online
+          wait_for:
+            host: "{{ inventory_hostname }}"
+            port: 22
+            delay: 900
+            timeout: 900
+          delegate_to: localhost
+
+        - name: Check Image Version      
+          ios_facts:
+
+        - debug: 
+            msg: "Current version is {{ ansible_net_version }}"
+
+        - name: ASSERT THAT THE IOS VERSION IS CORRECT
+          assert:
+            that:
+              - upgrade_ios_version == ansible_net_version
+          
+        - debug: 
+            msg: "Software Upgrade has been completed"
       
-    - name: Check validity of IOS Image [ FAIL Out if first 10 characters of new_image != current_image ]
-      assert:
-       that: upgrade_ios_version[:8] in ansible_net_version
-       fail_msg: "FAIL- New OS Image invalid for device"
-       success_msg: "PASS - New OS Image confirmed valid for device"
-       
-    - name: Set variables for device file systems.
-      set_fact:
-      free_space: ansible_net_filesystems_info[ansible_net_filesystems[0]]["spacefree_kb"]
-      file_destination: "{{ ansible_net_filesystems[0] + upgrade_ios_version }}"
+      rescue:
+        - name: Fallback - Notify of failure
+          debug:
+            msg: "The playbook failed during the upgrade process. Please check the device status."
 
-      
+        - name: Optionally, roll back to previous IOS version if needed
+          ios_config:
+            commands:
+              - "boot system flash:cat9k_iosxe.17.12.04.SPA.bin"  
+
+        - name: Reboot the device if rolled back
+          cli_command:
+            command: reload
+            prompt: 
+              - confirm
+            answer: 
+              - 'y'
+
+      always:
+        - name: Cleanup or final tasks
+          debug:
+            msg: "This will always run, regardless of success or failure."
