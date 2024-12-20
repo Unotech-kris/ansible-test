@@ -45,38 +45,17 @@
 
     - name: Save output to backup directory
       copy:
-        content: "{{ config.stdout[0] }}"
+        content: "{{config.stdout[0]}}"
         dest: "~/IOS/backups/{{ lookup('pipe', 'date +%Y-%m-%d') }}/{{ inventory_hostname }}-{{ lookup('pipe', 'date +%Y-%m-%d') }}-config.txt"
 
     - name: Save running config 
       ios_config:
         save_when: always 
-
-## Copy software to target device 
-    - name: Check for file in flash
-      ios_command:
-        commands:
-          - "dir flash:"
-      register: flash_output
-      
-    - name: Check if command was successful
-      fail:
-        msg: "The 'dir flash:' command did not return any output. Check the device."
-      when: flash_output.rc != 0
-
-    - name: Debug flash output
-      debug:
-        var: flash_output
         
-    - name: Debug flash output for file existence check
+    - name: Debug if file exists
       debug:
-       msg: "Flash output: {{ flash_output.stdout[0] }}"
-       
-    - name: Set fact if specific file exists
-      set_fact:
-        file_exists: "cat9k_iosxe.17.13.01.SPA.bin in flash_output.stdout[0] }}"
-      when: flash_output.stdout | length > 0
-      
+        msg: "File exists: {{ file_exists | default(false) }}"
+    
     - name: Run specific command if file does not exist 
       net_put:
        src: "/IOS/cat9k_iosxe.17.13.01.SPA.bin"
