@@ -22,9 +22,6 @@
 ## Create backup folder for today 
 - name: Create backup directory
   hosts: localhost
-  gather_facts: yes
-  vars: 
-    upgrade_ios_version: 17.13.01
   tasks:
     - name: Store DTG as fact
       set_fact:
@@ -39,6 +36,9 @@
 ## Backup Running Config 
 - name: Backup Running Config 
   hosts: 192.168.99.53 
+  gather_facts: yes
+  vars: 
+    upgrade_ios_version: 17.13.01
   tasks:
     - name: Backup Running Config  
       ios_command:
