@@ -47,7 +47,7 @@
     - name: Save output to backup directory
       copy:
         content: "{{ config.stdout[0] }}"
-        dest: "~/IOS/backups/{{ ansible_date_time.date }}/{{ inventory_hostname }}-{{ ansible_date_time.date }}-config.txt"
+        dest: "~/IOS/backups/{{ lookup('pipe', 'date +%Y-%m-%d') }}/{{ inventory_hostname }}-{{ lookup('pipe', 'date +%Y-%m-%d') }}-config.txt"
 
     - name: Save running config 
       ios_config:
