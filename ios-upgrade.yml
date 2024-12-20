@@ -53,7 +53,7 @@
       ios_config:
         save_when: always 
     
-    - name: Run specific command if file does not exist 
+    - name: Copy ios file to host
       net_put:
        src: "/IOS/cat9k_iosxe.17.13.01.SPA.bin"
        protocol: scp
