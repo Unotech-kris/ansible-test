@@ -22,13 +22,8 @@
 ## Create backup folder for today 
 - name: Create backup directory
   hosts: localhost
-  gather_facts: no
+  gather_facts: yes
   tasks:
-    - name: Get ansible date/time facts
-      setup:
-        filter: "ansible_date_time"
-        gather_subset: "!all"
-
     - name: Store DTG as fact
       set_fact:
         DTG: "{{ ansible_date_time.date }}"
