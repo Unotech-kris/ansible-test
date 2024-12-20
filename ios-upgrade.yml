@@ -68,15 +68,15 @@
 
     - name: Set fact if specific file exists
       set_fact:
-       file_exists: "{{ 'cat9k_iosxe.' + {{ upgrade_ios_version }} + '.SPA.bin' in flash_output.stdout[0] }}"
+       file_exists: "cat9k_iosxe.17.12.04.SPA.bin in flash_output.stdout[0] }}"
       when: flash_output.stdout | length > 0  # Ensure there is output before checking
 
     
     - name: Run specific command if file does not exist
       net_put:
-       src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+       src: "/IOS/cat9k_iosxe.17.12.04.SPA.bin"
        protocol: scp
-       dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+       dest: "flash:/cat9k_iosxe.17.12.04.SPA.bin"
        timeout: 900
       when: not file_exists | default(false)
 
