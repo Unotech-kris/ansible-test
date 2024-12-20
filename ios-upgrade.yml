@@ -35,10 +35,7 @@
 
 ## Backup Running Config 
 - name: Backup Running Config 
-  hosts: 192.168.99.53 
-  gather_facts: yes
-  vars: 
-    upgrade_ios_version: 17.12.04
+  hosts: 192.168.99.53
   tasks:
     - name: Backup Running Config  
       ios_command:
@@ -98,7 +95,7 @@
         host: "{{ inventory_hostname }}"
         port: 22
         delay: 90
-        timeout: 900
+        timeout: 1200
       delegate_to: localhost
 
 ## Check current image 
