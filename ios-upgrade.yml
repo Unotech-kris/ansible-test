@@ -62,13 +62,9 @@
           - "dir flash:"
       register: flash_output
 
-    - name: Debug flash output
-      debug:
-       var: flash_output
- 
     - name: Debug upgrade_ios_version
       debug:
-      msg: "Upgrade IOS Version is {{ upgrade_ios_version }}"
+       msg: "Upgrade IOS Version is {{ upgrade_ios_version }}"
 
     - name: Set fact if specific file exists
       set_fact:
