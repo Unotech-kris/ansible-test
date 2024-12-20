@@ -47,7 +47,7 @@
             host: "{{ inventory_hostname }}"
             port: 22
             delay: 900
-            timeout: 900
+            timeout: 2000
           delegate_to: localhost
 
         - name: Check Image Version      
