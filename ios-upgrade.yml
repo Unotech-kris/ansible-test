@@ -56,7 +56,7 @@
         dest: "~/IOS/backups/{{ DTG }}/{{ inventory_hostname }}-{{ DTG }}-config.txt"
 
 ## SAVE the Running Config 
- - name: Save running config 
+  - name: Save running config 
     ios_config:
      save_when: always 
 
