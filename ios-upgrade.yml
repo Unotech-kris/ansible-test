@@ -54,13 +54,11 @@
         content: "{{ config.stdout[0] }}"
         dest: "~/IOS/backups/{{ DTG }}/{{ inventory_hostname }}-{{ DTG }}-config.txt"
 
-## SAVE the Running Config 
     - name: Save running config 
       ios_config:
         save_when: always 
 
 ## Copy software to target device 
-
     - name: Check for file in flash
       ios_command:
         commands:
@@ -82,13 +80,13 @@
        protocol: scp
        dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
        timeout: 600
-      when: not file_exists | default(false)  # Handle the case where file_exists is not defined
+      when: not file_exists | default(false)
 
 ## Change the Boot Variable to the new image 
     - name: Change Boot Variable to new image 
       ios_config: 
         commands: 
-        - "boot system flash:'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin'"
+         - "boot system flash:'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin'"
         save_when: always 
 
 ## Reload the device 
