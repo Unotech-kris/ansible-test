@@ -23,6 +23,8 @@
 - name: Create backup directory
   hosts: localhost
   gather_facts: yes
+  vars: 
+    upgrade_ios_version: "17.13.01"
   tasks:
     - name: Store DTG as fact
       set_fact:
