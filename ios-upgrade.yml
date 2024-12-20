@@ -51,10 +51,6 @@
     - name: Save running config 
       ios_config:
         save_when: always 
-        
-    - name: Debug if file exists
-      debug:
-        msg: "File exists: {{ file_exists | default(false) }}"
     
     - name: Run specific command if file does not exist 
       net_put:
@@ -62,7 +58,6 @@
        protocol: scp
        dest: "flash:/cat9k_iosxe.17.13.01.SPA.bin"
        timeout: 900
-      when: not file_exists | default(false)
 
 ## Change the Boot Variable to the new image 
     - name: Change Boot Variable to new image 
