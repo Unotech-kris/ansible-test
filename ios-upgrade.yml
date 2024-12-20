@@ -52,7 +52,7 @@
     - name: Save output to backup directory
       copy:
         content: "{{ config.stdout[0] }}"
-        dest: "~/IOS/backups/{{ DTG }}/{{ inventory_hostname }}-{{ DTG }}-config.txt"
+        dest: "~/IOS/backups/{{ ansible_date_time.date }}/{{ inventory_hostname }}-{{ ansible_date_time.date }}-config.txt"
 
     - name: Save running config 
       ios_config:
