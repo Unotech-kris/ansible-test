@@ -58,7 +58,16 @@
         commands:
           - "dir flash:"
       register: flash_output
+      
+    - name: Check if command was successful
+      fail:
+        msg: "The 'dir flash:' command did not return any output. Check the device."
+      when: flash_output.rc != 0
 
+    - name: Debug flash output
+      debug:
+        var: flash_output
+        
     - name: Debug flash output for file existence check
       debug:
        msg: "Flash output: {{ flash_output.stdout[0] }}"
