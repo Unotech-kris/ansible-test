@@ -9,14 +9,15 @@
     - name: CHECK CURRENT VERSION
       ios_facts:
 
-    - debug: 
+    - name: Debug current and upgrade version
+      debug: 
         msg: 
-        - "Current version is {{ ansible_net_version }}"
-        - "Upgrade image is {{ upgrade_ios_version }}"
+          - "Current version is {{ ansible_net_version }}"
+          - "Upgrade image is {{ upgrade_ios_version }}"
 
-    - debug: 
-        msg: 
-        - "Image is not compliant and will be upgraded"
+    - name: Check if upgrade is needed
+      debug: 
+        msg: "Image is not compliant and will be upgraded"
       when: ansible_net_version != upgrade_ios_version
 
 ## Create backup folder for today 
@@ -45,7 +46,7 @@
 
     - name: Save output to backup directory
       copy:
-        content: "{{config.stdout[0]}}"
+        content: "{{ config.stdout[0] }}"
         dest: "~/IOS/backups/{{ lookup('pipe', 'date +%Y-%m-%d') }}/{{ inventory_hostname }}-{{ lookup('pipe', 'date +%Y-%m-%d') }}-config.txt"
 
     - name: Save running config 
@@ -88,13 +89,12 @@
       ios_facts:
 
     - debug: 
-       msg: 
-       - "Current version is {{ ansible_net_version }}"
+       msg: "Current version is {{ ansible_net_version }}"
 
     - name: ASSERT THAT THE IOS VERSION IS CORRECT
       assert:
        that:
-       - upgrade_ios_version == ansible_net_version
+        - upgrade_ios_version == ansible_net_version
+       
     - debug: 
-       msg: 
-       - "Software Upgrade has been completed"
+       msg: "Software Upgrade has been completed"
