@@ -20,43 +20,9 @@
         msg: "Image is not compliant and will be upgraded"
       when: ansible_net_version != upgrade_ios_version
 
-## Create backup folder for today 
-- name: Create backup directory
-  hosts: localhost
-  tasks:
-    - name: Store DTG as fact
-      set_fact:
-        DTG: "{{ ansible_date_time.date }}"
-
-    - name: Create backup directory
-      file:
-        path: "~/IOS/backups/{{ DTG }}"
-        state: directory
-      run_once: true
-
-## Backup Running Config 
-- name: Backup Running Config 
-  hosts: 192.168.99.53
-  tasks:
-    - name: Backup Running Config  
-      ios_command:
-        commands: 
-          - show run  
-      register: config
-
-    - name: Save output to backup directory
-      copy:
-        content: "{{ config.stdout[0] }}"
-        dest: "~/IOS/backups/{{ lookup('pipe', 'date +%Y-%m-%d') }}/{{ inventory_hostname }}-{{ lookup('pipe', 'date +%Y-%m-%d') }}-config.txt"
-
-    - name: Save running config 
-      ios_config:
-        save_when: always 
-    
     - name: Copy ios file to host
       net_put:
-       src: "/IOS/cat9k_iosxe.17.13.01.SPA.bin"
-       protocol: scp
+       src: "~/IOS/cat9k_iosxe.17.13.01.SPA.bin"
        dest: "flash:/cat9k_iosxe.17.13.01.SPA.bin"
        timeout: 900
 
