@@ -25,7 +25,7 @@
        src: "/IOS/cat9k_iosxe.17.13.01.SPA.bin"
        dest: "flash:/cat9k_iosxe.17.13.01.SPA.bin"
       vars: 
-       ansible_command_timeout: 600
+       ansible_command_timeout: 900
 
 ## Change the Boot Variable to the new image 
     - name: Change Boot Variable to new image 
