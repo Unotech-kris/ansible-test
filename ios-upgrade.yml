@@ -1,6 +1,5 @@
 ---
 # Ansible Playbook to upgrade Cisco IOS 
-
 - name: Upgrade CISCO IOS 
   hosts: 192.168.99.53
   vars: 
@@ -62,70 +61,66 @@
 
 ## Copy software to target device 
 
-   - name: Check for file in flash
-     ios_command:
-       commands:
-         - "dir flash:"
-     register: flash_output
+    - name: Check for file in flash
+      ios_command:
+        commands:
+          - "dir flash:"
+      register: flash_output
      
-   - name: Debug flash output
-     debug:
-      var: flash_output
+    - name: Debug flash output
+      debug:
+       var: flash_output
         
-   - name: Set fact if specific file exists
-     set_fact:
-      file_exists: "{{ 'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin' in flash_output.stdout[0] }}"
-     when: flash_output.stdout | length > 0  # Ensure there is output before checking
+    - name: Set fact if specific file exists
+      set_fact:
+       file_exists: "{{ 'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin' in flash_output.stdout[0] }}"
+      when: flash_output.stdout | length > 0  # Ensure there is output before checking
 
-   - name: Run specific command if file does not exist
-     net_put:
-      src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
-      protocol: scp
-      dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
-      timeout: 600
-     when: not file_exists | default(false)  # Handle the case where file_exists is not defined
+    - name: Run specific command if file does not exist
+      net_put:
+       src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+       protocol: scp
+       dest: "flash:/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
+       timeout: 600
+      when: not file_exists | default(false)  # Handle the case where file_exists is not defined
 
 ## Change the Boot Variable to the new image 
-
-   - name: Change Boot Variable to new image 
-     ios_config: 
-       commands: 
-       - "boot system flash:'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin'"
-       save_when: always 
+    - name: Change Boot Variable to new image 
+      ios_config: 
+        commands: 
+        - "boot system flash:'cat9k_iosxe.' + upgrade_ios_version + '.SPA.bin'"
+        save_when: always 
 
 ## Reload the device 
-
-   - name: Reload the Device 
-     cli_command: 
-       command: reload
-       prompt: 
-       - confirm
-       answer: 
-       - 'y'
+    - name: Reload the Device 
+      cli_command: 
+        command: reload
+        prompt: 
+        - confirm
+        answer: 
+        - 'y'
          
 ## Wait for Reachability to the device 
-
-   - name: Wait for device to come back online
-     wait_for:
-       host: "{{ inventory_hostname }}"
-       port: 22
-       delay: 90
-       timeout: 900
-     delegate_to: localhost
+    - name: Wait for device to come back online
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        delay: 90
+        timeout: 900
+      delegate_to: localhost
 
 ## Check current image 
+    - name: Check Image Version      
+      ios_facts:
 
-   - name: Check Image Version      
-     ios_facts:
-
-   - debug: 
+    - debug: 
        msg: 
        - "Current version is {{ ansible_net_version }}"
 
-   - name: ASSERT THAT THE IOS VERSION IS CORRECT
-     assert:
+    - name: ASSERT THAT THE IOS VERSION IS CORRECT
+      assert:
        that:
        - upgrade_ios_version == ansible_net_version
-   - debug: 
+    - debug: 
        msg: 
        - "Software Upgrade has been completed"
