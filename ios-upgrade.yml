@@ -69,6 +69,10 @@
        file_exists: "{{ 'cat9k_iosxe.' + {{ upgrade_ios_version }} + '.SPA.bin' in flash_output.stdout[0] }}"
       when: flash_output.stdout | length > 0  # Ensure there is output before checking
 
+    - name: Debug upgrade_ios_version
+      debug:
+        msg: "Upgrade IOS Version is {{ upgrade_ios_version }}"
+    
     - name: Run specific command if file does not exist
       net_put:
        src: "/IOS/cat9k_iosxe.{{ upgrade_ios_version }}.SPA.bin"
