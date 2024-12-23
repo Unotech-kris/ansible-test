@@ -31,6 +31,7 @@
         - name: Change Boot Variable to new image 
           ios_config: 
             commands: 
+              - "no boot system"
               - "boot system flash:cat9k_iosxe.17.13.01.SPA.bin"
             save_when: always 
 
@@ -47,7 +48,7 @@
             host: "{{ inventory_hostname }}"
             port: 22
             delay: 900
-            timeout: 2000
+            timeout: 1000
           delegate_to: localhost
 
         - name: Check Image Version      
@@ -72,7 +73,8 @@
         - name: Optionally, roll back to previous IOS version if needed
           ios_config:
             commands:
-              - "boot system flash:cat9k_iosxe.17.12.04.SPA.bin"  
+              - "no boot system"
+              - "boot system flash:cat9k_iosxe.17.12.04.SPA.bin"
 
         - name: Reboot the device if rolled back
           cli_command:
