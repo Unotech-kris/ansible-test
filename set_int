@@ -1,0 +1,21 @@
+---
+# Ansible Playbook to Configure Cisco Interface
+- name: Configure Cisco Interface
+  hosts: 192.168.99.53
+  gather_facts: no
+  tasks:
+    - name: Configure Interface
+      ios_config:
+        lines:
+          - interface GigabitEthernet 1/0/20
+          - description "Configured by Ansible"
+          - ip address 192.168.1.1 255.255.255.0
+          - no shutdown
+        save_when: always
+        lines:
+          - interface GigabitEthernet 1/0/21
+          - description "Configured by Ansible 2"
+          - ip address 192.168.1.2 255.255.255.0
+          - no shutdown
+        save_when: always
+        
