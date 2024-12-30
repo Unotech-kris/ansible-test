@@ -1,7 +1,5 @@
-[switches:children]
-eos
-ios
-vyos
+[switches]
+C9300 ansible_host=192.168.99.53 ansible_user=admin
 
 [switch]
 C9300 ansible_host=192.168.99.53
