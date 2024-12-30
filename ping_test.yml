@@ -1,0 +1,6 @@
+---
+- name: Test SSH Connection to Switch
+  hosts: switches
+  tasks:
+    - name: Ping the switch
+      ping:
